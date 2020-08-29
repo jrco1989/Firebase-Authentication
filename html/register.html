@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+  -->
+  <title>Logging</title>
+</head>
+<body>
+  <script type="module" src="main.js"></script>
+<div class="container">
+  <div class="row">
+    <div class="formulario" id="formulario">
+            
+      <input class="mdl-textfield__input" style="display:inline;" 
+      type="text" id="email" name="email" placeholder="Email"/><br>
+      &nbsp;&nbsp;&nbsp;
+      
+      <input class="mdl-textfield__input" style="display:inline;"
+      type="text" name="password" id="password" placeholder="Password"/><br>
+      &nbsp;&nbsp;&nbsp;
+      <input type="submit" id="btnSend" value="Entrar"> 
+    </div>             
+    <a href="login.html">acceder si ya estás registrado</a>
+  </div>
+</div>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-auth.js"></script>
+<script src="./src/main.js"></script>
+</body>
+
+</html>
