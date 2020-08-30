@@ -34,6 +34,7 @@ function register1(event){
         var errorCode = error.code;
         var errorMessage = error.message;
         // [START_EXCLUDE]
+        
         if (errorCode == 'auth/weak-password') {
           alert('The password is too weak.');
         } else {
@@ -41,8 +42,40 @@ function register1(event){
         }
         console.log(error);
         // [END_EXCLUDE]
-      });
+      }).then(function(){
+        var user = firebase.auth().currentUser;
+        user.sendEmailVerification().then(function() {
+          // Email sent.
+        }).catch(function(error) {
+          // An error happened.
+        });
+        
+        console.log("created user")});
 }
 //console.log(info.email.value)
+function login(event){
+  event.preventDefault();
+  
+  //var email = info.email.value
+  //var password = info.password.value
+  //
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+  console.log(email,password)
+  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // [START_EXCLUDE]
+      if (errorCode == 'auth/weak-password') {
+        alert('The password is too weak.');
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+      // [END_EXCLUDE]
+    });
+}
 
 info.addEventListener('click', register1 )
+//info2.addEventListener('click', login )
