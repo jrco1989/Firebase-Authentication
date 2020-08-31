@@ -1,6 +1,3 @@
-//import { myFunction } from './lib/index.js';
-/* TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->*/
 
 var firebaseConfig = {
     apiKey: "AIzaSyC2UfxFH61_n2e9a2B2ZjZJSQiU2PLo0ac",
@@ -15,27 +12,32 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
   
-//myFunction();
 document.getElementById("email").focus();
 
-const info2 = document.getElementById("btnLogin")
+const info = document.getElementById("btnSend")
 
-function login(event){
-  event.preventDefault();
+function register1(event){
+    event.preventDefault();
+    
     var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
-  console.log(email,password)
-  firebase.auth().signInWithEmailAndPassword(email, password).then(function(){console.log("user logged in")}).catch(function(error) {
-      
+    var password = document.getElementById('password').value;
+    
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+      var user = firebase.auth().currentUser;
+      user.sendEmailVerification().then(function() {
+        console.log("created user and sent email")
+      }).catch(function(error) {
+      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      
+      // [START_EXCLUDE]
       if (errorCode == 'auth/weak-password') {
         alert('The password is too weak.');
-      } else {
-        alert(errorMessage);
-      }
+      } else {alert(errorMessage);}
       console.log(error);
+
+      })
+        
     });
 }
-info2.addEventListener('click', login )
+info.addEventListener('click', register1 )
