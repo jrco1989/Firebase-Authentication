@@ -1,7 +1,3 @@
-//import { myFunction } from './lib/index.js';
-/* TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->*/
-
 var firebaseConfig = {
     apiKey: "AIzaSyC2UfxFH61_n2e9a2B2ZjZJSQiU2PLo0ac",
     authDomain: "agro-ff2b1.firebaseapp.com",
@@ -12,20 +8,27 @@ var firebaseConfig = {
     appId: "1:953858022925:web:b91b98e5ddabb9799dbf44"
 };
 
-// Initialize Firebase
+
 firebase.initializeApp(firebaseConfig);
   
-//myFunction();
 document.getElementById("email").focus();
-
+document.querySelector(".Wall").style.display='none'
 const info2 = document.getElementById("btnLogin")
+function View1 () {
+  document.querySelector(".Wall").style.display='block'
+  document.querySelector(".FormLogin").style.display='none'
+}
 
 function login(event){
   event.preventDefault();
-    var email = document.getElementById('email').value;
+  var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
   console.log(email,password)
-  firebase.auth().signInWithEmailAndPassword(email, password).then(function(){console.log("user logged in")}).catch(function(error) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then(function(){View1()
+  
+})
+  .catch(function(error) {
       
       var errorCode = error.code;
       var errorMessage = error.message;
