@@ -12,18 +12,49 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
-const savePost = (desciption) => 
+const savePost = (description) => 
   db.collection('posts').doc().set({
   description: description, 
 })
 
-
-  
 document.getElementById("email").focus();
 document.querySelector(".Wall").style.display='none'
 
+const PostsContainer = document.getElementById('Posts')
 const taskform = document.querySelector("#task-form")
 
+const getTask = () => db.collection('posts').get();//es un evento asíncrono 
+const onGetTask = (callback) => db.collection('posts').onSnapshot(callback)
+
+window.addEventListener('DOMContentLoaded', async(e)=>{
+  //const querySnapshot = await getTask()
+  
+  onGetTask((querySnapshot)=>{
+    PostsContainer.innerHTML=""
+    querySnapshot.forEach(doc => {
+
+
+      console.log(doc.data())
+      let post=doc.data()
+      post.id=doc.id
+      console.log(post)
+      PostsContainer.innerHTML += `<div class='card card-body mt-2 border-primary'>
+      <h3>${post.description}</h3>
+      <div>
+      <button class="btn btn-primary ">comment</button>
+      <button class="btn btn-secundary btn-edith">Edith</button>
+      <button class="btn btn-secundary btn-delete" data-id="${post.id}">Delete</button>
+      </div>
+      </div>`;
+      const btnsDelete = document.querySelectorAll('.btn-delete')
+      btnsDelete.forEach(btn =>{
+        btn.addEventListener('click', (e)=>{
+          console.log(e.target)
+        })
+      })
+    })
+  })
+})
 
 taskform.addEventListener("submit", async (e) =>{
   e.preventDefault()
