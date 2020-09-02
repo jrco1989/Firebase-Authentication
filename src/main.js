@@ -25,6 +25,7 @@ const taskform = document.querySelector("#task-form")
 
 const getTask = () => db.collection('posts').get();//es un evento asíncrono 
 const onGetTask = (callback) => db.collection('posts').onSnapshot(callback)
+const deletePost = id => db.collection('posts').doc(id).delete()
 
 window.addEventListener('DOMContentLoaded', async(e)=>{
   //const querySnapshot = await getTask()
@@ -33,11 +34,9 @@ window.addEventListener('DOMContentLoaded', async(e)=>{
     PostsContainer.innerHTML=""
     querySnapshot.forEach(doc => {
 
-
-      console.log(doc.data())
       let post=doc.data()
       post.id=doc.id
-      console.log(post)
+      console.log(post.id)
       PostsContainer.innerHTML += `<div class='card card-body mt-2 border-primary'>
       <h3>${post.description}</h3>
       <div>
@@ -48,8 +47,9 @@ window.addEventListener('DOMContentLoaded', async(e)=>{
       </div>`;
       const btnsDelete = document.querySelectorAll('.btn-delete')
       btnsDelete.forEach(btn =>{
-        btn.addEventListener('click', (e)=>{
-          console.log(e.target)
+        btn.addEventListener('click', async(e)=>{
+          console.log(e.target.dataset.id)
+          await deletePost(e.target.dataset.id)
         })
       })
     })
