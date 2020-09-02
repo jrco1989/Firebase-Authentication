@@ -10,9 +10,29 @@ var firebaseConfig = {
 
 
 firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+const savePost = (desciption) => 
+  db.collection('posts').doc().set({
+  description: description, 
+})
+
+
   
 document.getElementById("email").focus();
 document.querySelector(".Wall").style.display='none'
+
+const taskform = document.querySelector("#task-form")
+
+
+taskform.addEventListener("submit", async (e) =>{
+  e.preventDefault()
+  description= taskform["task-post"].value
+  console.log(description)
+  await savePost(description)
+  taskform.reset()
+})
+
 const info2 = document.getElementById("btnLogin")
 function View1 () {
   document.querySelector(".Wall").style.display='block'
