@@ -8,13 +8,13 @@ var firebaseConfig = {
     appId: "1:953858022925:web:b91b98e5ddabb9799dbf44"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
-const savePost = (description) => 
+const savePost = (description, userID) => 
   db.collection('posts').doc().set({
   description: description, 
+  userID : userID,
 })
 
 document.getElementById("email").focus();
@@ -33,23 +33,26 @@ window.addEventListener('DOMContentLoaded', async(e)=>{
   onGetTask((querySnapshot)=>{
     PostsContainer.innerHTML=""
     querySnapshot.forEach(doc => {
-
       let post=doc.data()
       post.id=doc.id
-      console.log(post.id)
+      //console.log(post.id)
       PostsContainer.innerHTML += `<div class='card card-body mt-2 border-primary'>
       <h3>${post.description}</h3>
       <div>
       <button class="btn btn-primary ">comment</button>
       <button class="btn btn-secundary btn-edith">Edith</button>
-      <button class="btn btn-secundary btn-delete" data-id="${post.id}">Delete</button>
+      <button class="btn btn-secundary btn-delete" data-id="${post.id}" data-user="${post.userID}">Delete</button>
       </div>
       </div>`;
       const btnsDelete = document.querySelectorAll('.btn-delete')
       btnsDelete.forEach(btn =>{
-        btn.addEventListener('click', async(e)=>{
-          console.log(e.target.dataset.id)
-          await deletePost(e.target.dataset.id)
+        btn.addEventListener('click', async(lola)=>{
+          //console.log(e.target.dataset.id)
+          let user = firebase.auth().currentUser;
+          console.log(" User login ",user.uid)
+          console.log("user that created button ", e.target.dataset.user)
+          if( lola.target.dataset.user === user.uid ){
+          await deletePost(e.target.dataset.id)}
         })
       })
     })
@@ -60,7 +63,9 @@ taskform.addEventListener("submit", async (e) =>{
   e.preventDefault()
   description= taskform["task-post"].value
   console.log(description)
-  await savePost(description)
+  let user = firebase.auth().currentUser;
+  console.log("user current ", user.uid)
+  await savePost(description,user.uid)
   taskform.reset()
 })
 
@@ -68,6 +73,8 @@ const info2 = document.getElementById("btnLogin")
 function View1 () {
   document.querySelector(".Wall").style.display='block'
   document.querySelector(".FormLogin").style.display='none'
+  let user = firebase.auth().currentUser;
+  console.log("current user ", user.uid)
 }
 
 function login(event){
@@ -77,6 +84,8 @@ function login(event){
   console.log(email,password)
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then(function(){View1()
+    //let user = firebase.auth().currentUser;
+    //console.log(user.uid)
   
 })
   .catch(function(error) {
