@@ -35,23 +35,37 @@ window.addEventListener('DOMContentLoaded', async(e)=>{
     querySnapshot.forEach(doc => {
       let post=doc.data()
       post.id=doc.id
+      console.log(post.id)
       //console.log(post.id)
-      PostsContainer.innerHTML += `<div class='card card-body mt-2 border-primary'>
+      PostsContainer.innerHTML += `<div class='card card-body mt-2 border-primary' data-user="${post.userID}" >
       <h3>${post.description}</h3>
       <div>
       <button class="btn btn-primary ">comment</button>
       <button class="btn btn-secundary btn-edith">Edith</button>
+      <div class = "deleter" data-user="${post.userID}" >
       <button class="btn btn-secundary btn-delete" data-id="${post.id}" data-user="${post.userID}">Delete</button>
       </div>
+      </div>
       </div>`;
+      
+      let divbtns = document.querySelectorAll('.deleter')
+      let user = firebase.auth().currentUser;
+      
+      divbtns.forEach(div =>{
+        console.log(user.uid, post.userID, div.dataset.user)
+        if (user.uid != div.dataset.user){
+        div.innerHTML=''}
+      })
+      
       const btnsDelete = document.querySelectorAll('.btn-delete')
+            
       btnsDelete.forEach(btn =>{
-        btn.addEventListener('click', async(lola)=>{
+        btn.addEventListener('click', async(e)=>{
           //console.log(e.target.dataset.id)
           let user = firebase.auth().currentUser;
           console.log(" User login ",user.uid)
           console.log("user that created button ", e.target.dataset.user)
-          if( lola.target.dataset.user === user.uid ){
+          if( e.target.dataset.user === user.uid ){
           await deletePost(e.target.dataset.id)}
         })
       })
