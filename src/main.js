@@ -22,32 +22,42 @@ document.querySelector(".Wall").style.display='none'
 
 const PostsContainer = document.getElementById('Posts')
 const taskform = document.querySelector("#task-form")
-
+ 
 const getTask = () => db.collection('posts').get();//es un evento asíncrono 
 const onGetTask = (callback) => db.collection('posts').onSnapshot(callback)
 const deletePost = id => db.collection('posts').doc(id).delete()
 
 window.addEventListener('DOMContentLoaded', async(e)=>{
-  //const querySnapshot = await getTask()
+//const querySnapshot = await getTask()
   
   onGetTask((querySnapshot)=>{
     PostsContainer.innerHTML=""
     querySnapshot.forEach(doc => {
       let post=doc.data()
       post.id=doc.id
-      console.log(post.id)
       //console.log(post.id)
       PostsContainer.innerHTML += `<div class='card card-body mt-2 border-primary' data-user="${post.userID}" >
       <h3>${post.description}</h3>
       <div>
       <button class="btn btn-primary ">comment</button>
-      <button class="btn btn-secundary btn-edith">Edith</button>
+      <button class="btn btn-secundary btn-edith">comment</button>
       <div class = "deleter" data-user="${post.userID}" >
       <button class="btn btn-secundary btn-delete" data-id="${post.id}" data-user="${post.userID}">Delete</button>
       </div>
+      <div class= "commentary"></div>
       </div>
       </div>`;
       
+      let btncomment = document.querySelectorAll('.btn-edith')
+      btncomment.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          console.log("catch of the button")
+
+        })
+
+      })
+      
+
       let divbtns = document.querySelectorAll('.deleter')
       let user = firebase.auth().currentUser;
       
@@ -63,13 +73,13 @@ window.addEventListener('DOMContentLoaded', async(e)=>{
         btn.addEventListener('click', async(e)=>{
           //console.log(e.target.dataset.id)
           let user = firebase.auth().currentUser;
-          console.log(" User login ",user.uid)
-          console.log("user that created button ", e.target.dataset.user)
+          //console.log(" User login ",user.uid)
+          //console.log("user that created button ", e.target.dataset.user)
           if( e.target.dataset.user === user.uid ){
           await deletePost(e.target.dataset.id)}
         })
       })
-    })
+-    })
   })
 })
 
